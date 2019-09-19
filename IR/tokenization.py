@@ -4,6 +4,10 @@ import sys
 import urllib
 from bs4 import BeautifulSoup
 import re
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
+
+ps = PorterStemmer()
 
 path = 'C:\\Users\\Tayyab Ali\\PycharmProjects\\indexing IR\\corpus\\'
 
@@ -95,4 +99,15 @@ for word in list(text):  # iterating on a copy since removing will mess things u
 
 #print(text.__len__())
 #print(i)
+#print(text)
+
+#for w in text:
+    #print(w, " : ", ps.stem(w))
+
+
+text = [ps.stem(word) for word in text]# for sentence in text]
+
+#ps.stem(text)
+
 print(text)
+
