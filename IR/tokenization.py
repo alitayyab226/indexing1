@@ -20,8 +20,19 @@ for r, d, f in os.walk(path):
             i = i+1
             files.append(os.path.join(r, file))
 
+docid = open("docids.txt", "w+")
+termid = open("termids.txt", "w+")
+
+hashmap = {}
+
+#hashmap["word"] = "tayyab"
+
+i=0
 for f in files:
-    print(f)
+    #print(os.path.basename(f))
+    docid.write("%d\t%s\n" % (i, os.path.basename(f)))
+    i=i +1
+    #print(f)
 
 file = open(f, "r")
 #print(file.read())
@@ -109,5 +120,19 @@ text = [ps.stem(word) for word in text]# for sentence in text]
 
 #ps.stem(text)
 
-print(text)
+#print(text.__len__())
+#text.append("tayyab")
+#text.append("tayyab")
+#print(text)
 
+k=0
+for i in range(text.__len__()):
+    try:
+        hashmap.__getitem__(text[i])
+        #print(text[i])
+    except:
+        hashmap[text[i]] = "in"
+        termid.write("%d\t%s\n" % (k, text[i]))
+        k = k+1
+
+#print(hashmap.__len__())
