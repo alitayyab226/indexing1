@@ -11,6 +11,8 @@ import codecs
 
 ps = PorterStemmer()
 
+
+
 path = 'C:\\Users\\Tayyab Ali\\PycharmProjects\\indexing IR\\corpus\\'
 
 i=0
@@ -26,6 +28,7 @@ docid = open("docids.txt", "w+")
 #termid = open("termids.txt", "w+")
 termid = codecs.open("termids.txt", 'w+', encoding='utf-8',errors='ignore')
 term_index = codecs.open("term_index.txt", 'w+', encoding='utf-8',errors='ignore')
+delta_term_index = codecs.open("delta_encoding_term_inex.txt", 'w+', encoding='utf-8',errors='ignore')
 
 hashmap = {}
 hashmapTDWA = {}
@@ -156,6 +159,7 @@ for f in files:
         #print(flags[t])
 
 
+
     for l in range(text.__len__()):
         try:
             hashmap.__getitem__(text[l])
@@ -183,17 +187,17 @@ for f in files:
     #print(arr_list[hashmap[text[1]]])
     #print(hashmap["diet"])
 
-print(hashmap)
-print(hashmapTDWA)
-print(hashmapW)
-print(hashmapT)
+#print(hashmap)
+#print(hashmapTDWA)
+#print(hashmapW)
+#print(hashmapT)
 
 #print(arr_list[98].__len__())
 #print(arr_list[98])
 
 s=i
 i=0
-for i in range(0, s):
+for i in range(0, hashmapT.__len__()):
     term_index.write("%i" %i)
     term_index.write("\t")
     term_index.write("%d" % hashmap[hashmapW[i]])
@@ -205,3 +209,42 @@ for i in range(0, s):
         term_index.write("%s" % arr_list[hashmapT[hashmapW[i]]][j])
         term_index.write("\t")
     term_index.write("\n")
+
+term_index.close()
+
+for i in range(0, hashmapT.__len__()):
+    delta_term_index.write("%i" %i)
+    delta_term_index.write("\t")
+    delta_term_index.write("%d" % hashmap[hashmapW[i]])
+    delta_term_index.write("\t")
+    delta_term_index.write("%d" % hashmapTDWA[hashmapW[i]])
+    delta_term_index.write("\t")
+    j=0
+    str0 = "0"
+    str1 = "1"
+    for j in range(0,(arr_list[i].__len__())):
+        if j==0:
+            str0 = ("%s" % arr_list[hashmapT[hashmapW[i]]][j])
+            delta_term_index.write("%s" % arr_list[hashmapT[hashmapW[i]]][j])
+            delta_term_index.write("\t")
+        if j>=1:
+            str = "{},{}"
+            str0 = re.split(r"[,]+", str0)
+            str1 = ("%s" % arr_list[hashmapT[hashmapW[i]]][j])
+            str1 = re.split(r"[,]+", str1)
+            #print(str0[0])
+            #print(str0[1])
+            #print(str0[2])
+            a = int(str1[0])-int(str0[0])
+            b = int(str1[1])
+            if a==0:
+                b = int(str1[1])-int(str0[1])
+            delta_term_index.write("%s" % str.format(a, b))
+            delta_term_index.write("\t")
+            str0 = arr_list[hashmapT[hashmapW[i]]][j]
+    delta_term_index.write("\n")
+
+delta_term_index.close()
+
+termid.close()
+docid.close()
